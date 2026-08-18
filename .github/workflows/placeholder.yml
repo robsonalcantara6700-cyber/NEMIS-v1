@@ -1,0 +1,10 @@
+name: NEMIS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "NEMIS online"
