@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-<title>NEMIS 2.0</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#020609">
+<title>NEMIS 2.0 — Holographic AI</title>
 
 <style>
 *{
@@ -13,156 +13,371 @@
     padding:0;
 }
 
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
 body{
     background:#020609;
     color:#00eaff;
     font-family:Arial,sans-serif;
-    height:100vh;
-    overflow:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    linear-gradient(rgba(0,234,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,234,255,.035) 1px,transparent 1px);
+    background-size:30px 30px;
+    pointer-events:none;
 }
 
 .app{
+    width:100%;
     height:100vh;
     display:flex;
     flex-direction:column;
 }
 
 header{
-    height:60px;
+    height:58px;
     display:flex;
     align-items:center;
     justify-content:space-between;
     padding:0 15px;
-    border-bottom:1px solid #063b46;
-    background:#020b10;
+    border-bottom:1px solid rgba(0,234,255,.3);
+    background:rgba(0,8,12,.85);
 }
 
 .logo{
     font-size:20px;
     font-weight:bold;
-    letter-spacing:3px;
-    text-shadow:0 0 12px #00eaff;
+    letter-spacing:4px;
+    text-shadow:0 0 15px #00eaff;
 }
 
 .status{
-    font-size:11px;
+    font-size:10px;
     color:#00ff88;
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#00ff88;
+    box-shadow:0 0 12px #00ff88;
 }
 
 main{
     flex:1;
+    position:relative;
     display:flex;
     align-items:center;
     justify-content:center;
-    position:relative;
+}
+
+.hud{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+}
+
+.hud-left,
+.hud-right{
+    position:absolute;
+    top:25px;
+    font-size:9px;
+    line-height:1.8;
+    color:#50dbea;
+    opacity:.8;
+}
+
+.hud-left{
+    left:12px;
+}
+
+.hud-right{
+    right:12px;
+    text-align:right;
 }
 
 .hologram{
-    width:280px;
-    height:280px;
-    border-radius:50%;
+    width:min(82vw,390px);
+    height:min(82vw,390px);
     position:relative;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:radial-gradient(
-        circle,
-        rgba(0,234,255,.25),
-        transparent 65%
-    );
-    box-shadow:
-        0 0 40px rgba(0,234,255,.3);
 }
 
 .ring{
     position:absolute;
-    border:1px solid #00eaff;
     border-radius:50%;
+    border:1px solid rgba(0,234,255,.75);
+    box-shadow:
+    0 0 20px rgba(0,234,255,.2),
+    inset 0 0 20px rgba(0,234,255,.08);
 }
 
-.r1{
-    width:100%;
-    height:100%;
-    animation:girar 10s linear infinite;
+.ring1{
+    inset:2%;
+    animation:spin 12s linear infinite;
 }
 
-.r2{
-    width:78%;
-    height:78%;
+.ring2{
+    inset:9%;
     border-style:dashed;
-    animation:girar 7s linear reverse infinite;
+    animation:spinReverse 17s linear infinite;
 }
 
-.r3{
+.ring3{
+    inset:18%;
+    animation:spin 8s linear infinite;
+}
+
+.ring4{
+    inset:27%;
+    border-color:rgba(0,234,255,.35);
+    animation:pulse 2s infinite;
+}
+
+.energy{
+    position:absolute;
     width:55%;
     height:55%;
-    animation:pulsar 2s infinite;
+    border-radius:50%;
+    background:radial-gradient(
+        circle,
+        rgba(0,234,255,.35),
+        rgba(0,130,180,.12),
+        transparent 70%
+    );
+    box-shadow:
+    0 0 40px rgba(0,234,255,.4),
+    0 0 100px rgba(0,234,255,.15);
+    animation:pulse 2.5s infinite;
+}
+
+.hologram-image{
+    position:absolute;
+    width:48%;
+    height:48%;
+    object-fit:contain;
+    border-radius:50%;
+    opacity:.9;
+    filter:
+    drop-shadow(0 0 10px #00eaff)
+    drop-shadow(0 0 30px #00eaff);
+    mix-blend-mode:screen;
 }
 
 .core{
-    width:80px;
-    height:80px;
+    position:absolute;
+    width:45px;
+    height:45px;
     border-radius:50%;
     background:#00eaff;
     box-shadow:
-        0 0 20px #00eaff,
-        0 0 60px #00eaff;
-    animation:pulsar 2s infinite;
+    0 0 15px #00eaff,
+    0 0 40px #00eaff,
+    0 0 80px rgba(0,234,255,.7);
+    animation:corePulse 1.5s infinite;
 }
 
-.panel{
+.scan{
     position:absolute;
-    bottom:80px;
-    width:90%;
-    max-width:500px;
-    border:1px solid #06434f;
-    background:rgba(0,10,15,.85);
-    padding:12px;
+    width:80%;
+    height:2px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        #00eaff,
+        transparent
+    );
+    box-shadow:0 0 15px #00eaff;
+    animation:scan 3s infinite;
+}
+
+.radar{
+    position:absolute;
+    bottom:25px;
+    left:15px;
+    width:100px;
+    height:100px;
+    border:1px solid rgba(0,234,255,.4);
+    border-radius:50%;
+    background:
+    radial-gradient(
+        circle,
+        transparent 30%,
+        rgba(0,234,255,.04) 31%,
+        transparent 32%
+    );
+}
+
+.radar::after{
+    content:"";
+    position:absolute;
+    width:50%;
+    height:1px;
+    left:50%;
+    top:50%;
+    background:#00eaff;
+    transform-origin:left;
+    animation:radar 2s linear infinite;
+    box-shadow:0 0 10px #00eaff;
+}
+
+.info{
+    position:absolute;
+    bottom:20px;
+    right:15px;
+    width:145px;
+    border:1px solid rgba(0,234,255,.25);
+    background:rgba(0,10,15,.7);
+    padding:8px;
+    font-size:9px;
+    line-height:1.8;
+}
+
+.value{
+    float:right;
+    color:#00ff88;
 }
 
 .log{
-    height:90px;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:78px;
+    width:90%;
+    max-width:500px;
+    max-height:90px;
     overflow:auto;
-    font-size:12px;
+    border:1px solid rgba(0,234,255,.2);
+    background:rgba(0,8,12,.75);
+    padding:8px;
+    font-size:10px;
     line-height:1.5;
 }
 
 .input-area{
-    height:70px;
+    min-height:68px;
     display:flex;
-    gap:8px;
-    padding:10px;
-    background:#020b10;
-    border-top:1px solid #063b46;
+    gap:7px;
+    padding:9px;
+    background:rgba(0,8,12,.95);
+    border-top:1px solid rgba(0,234,255,.25);
 }
 
 input{
     flex:1;
+    min-width:0;
     background:#031116;
     border:1px solid #07515f;
-    color:#fff;
-    padding:12px;
+    color:white;
     border-radius:7px;
+    padding:12px;
     outline:none;
 }
 
-button{
-    background:#03212a;
-    color:#00eaff;
-    border:1px solid #00eaff;
-    border-radius:7px;
-    padding:0 15px;
+input:focus{
+    border-color:#00eaff;
+    box-shadow:0 0 10px rgba(0,234,255,.2);
 }
 
-@keyframes girar{
-    from{transform:rotate(0deg)}
+button{
+    border:1px solid #00eaff;
+    background:rgba(0,234,255,.08);
+    color:#00eaff;
+    border-radius:7px;
+    padding:0 13px;
+    font-weight:bold;
+}
+
+button:active{
+    transform:scale(.96);
+}
+
+@keyframes spin{
+    from{transform:rotate(0)}
     to{transform:rotate(360deg)}
 }
 
-@keyframes pulsar{
+@keyframes spinReverse{
+    from{transform:rotate(360deg)}
+    to{transform:rotate(0)}
+}
+
+@keyframes pulse{
     50%{
-        transform:scale(1.08);
-        opacity:.7;
+        transform:scale(1.07);
+        opacity:.5;
+    }
+}
+
+@keyframes corePulse{
+    50%{
+        transform:scale(1.25);
+        box-shadow:
+        0 0 25px #00eaff,
+        0 0 70px #00eaff,
+        0 0 110px rgba(0,234,255,.7);
+    }
+}
+
+@keyframes scan{
+    0%,100%{
+        transform:translateY(-130px);
+        opacity:0;
+    }
+    50%{
+        transform:translateY(130px);
+        opacity:1;
+    }
+}
+
+@keyframes radar{
+    from{transform:rotate(0)}
+    to{transform:rotate(360deg)}
+}
+
+@media(max-width:600px){
+
+    .hud-left,
+    .hud-right{
+        font-size:8px;
+    }
+
+    .info{
+        display:none;
+    }
+
+    .radar{
+        width:75px;
+        height:75px;
+        bottom:15px;
+    }
+
+    .log{
+        bottom:72px;
+        max-height:70px;
+    }
+
+    .input-area{
+        height:65px;
+    }
+
+    button{
+        padding:0 10px;
     }
 }
 </style>
@@ -174,42 +389,79 @@ button{
 
 <header>
     <div class="logo">NEMIS 2.0</div>
-    <div class="status" id="status">
-        SISTEMA ONLINE
+
+    <div class="status">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="status">SYSTEM ONLINE</span>
     </div>
 </header>
 
 <main>
 
-    <div class="hologram">
-        <div class="ring r1"></div>
-        <div class="ring r2"></div>
-        <div class="ring r3"></div>
-        <div class="core"></div>
-    </div>
+<div class="hud">
 
-    <div class="panel">
-        <div class="log" id="log">
-            NEMIS 2.0 inicializada...
-        </div>
-    </div>
+<div class="hud-left">
+NEMIS CORE<br>
+NEURAL SYSTEM<br>
+VOICE: READY<br>
+AI: STANDBY
+</div>
+
+<div class="hud-right">
+SYSTEM 2.0<br>
+HOLOGRAPHIC HUD<br>
+RADAR ACTIVE<br>
+MOBILE MODE
+</div>
+
+</div>
+
+<div class="hologram">
+
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<div class="ring ring3"></div>
+<div class="ring ring4"></div>
+
+<div class="energy"></div>
+
+<img
+src="hologram.gif"
+class="hologram-image"
+alt="NEMIS">
+
+<div class="core"></div>
+
+<div class="scan"></div>
+
+</div>
+
+<div class="radar"></div>
+
+<div class="info">
+IA <span class="value" id="ia">READY</span><br>
+N8N <span class="value" id="n8n">OFF</span><br>
+VOICE <span class="value">READY</span><br>
+CORE <span class="value">100%</span>
+</div>
+
+<div class="log" id="log">
+NEMIS 2.0 inicializada...<br>
+Sistema holográfico online.
+</div>
 
 </main>
 
 <div class="input-area">
 
-    <input
-        id="comando"
-        placeholder="Digite um comando para a NEMIS..."
-    >
+<input
+id="comando"
+type="text"
+placeholder="Digite um comando para NEMIS...">
 
-    <button onclick="ouvir()">
-        🎙️
-    </button>
+<button onclick="ouvir()">🎙️</button>
 
-    <button onclick="enviar()">
-        ENVIAR
-    </button>
+<button onclick="enviar()">ENVIAR</button>
 
 </div>
 
@@ -217,14 +469,10 @@ button{
 
 <script>
 
-/*
-==================================================
-NEMIS 2.0
-WEBHOOK DO N8N
-==================================================
-
-COLOQUE A URL DO SEU WEBHOOK AQUI.
-*/
+/* ==========================================
+   NEMIS 2.0
+   WEBHOOK N8N
+   ========================================== */
 
 const N8N_WEBHOOK_URL =
 "COLE_AQUI_A_URL_DO_N8N";
@@ -233,10 +481,10 @@ const N8N_WEBHOOK_URL =
 function registrar(texto){
 
     const log =
-        document.getElementById("log");
+    document.getElementById("log");
 
     const linha =
-        document.createElement("div");
+    document.createElement("div");
 
     linha.textContent = texto;
 
@@ -244,13 +492,32 @@ function registrar(texto){
 }
 
 
+function falar(texto){
+
+    if(!window.speechSynthesis){
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const voz =
+    new SpeechSynthesisUtterance(texto);
+
+    voz.lang = "pt-BR";
+    voz.rate = 0.95;
+    voz.pitch = 1;
+
+    speechSynthesis.speak(voz);
+}
+
+
 async function enviar(){
 
     const campo =
-        document.getElementById("comando");
+    document.getElementById("comando");
 
     const comando =
-        campo.value.trim();
+    campo.value.trim();
 
     if(!comando){
         return;
@@ -262,11 +529,11 @@ async function enviar(){
         "VOCÊ: " + comando
     );
 
-    /*
-    ==============================================
-    TESTE LOCAL
-    ==============================================
-    */
+    document.getElementById("ia")
+    .textContent = "PROCESSANDO";
+
+
+    /* N8N ainda não configurado */
 
     if(
         N8N_WEBHOOK_URL.includes(
@@ -275,54 +542,55 @@ async function enviar(){
     ){
 
         registrar(
-            "NEMIS: Webhook ainda não configurado."
+            "NEMIS: conexão IA aguardando."
         );
 
         falar(
-            "O webhook do n8n ainda não foi configurado."
+            "Olá. Eu sou a NEMIS. Minha conexão com a inteligência artificial ainda está aguardando configuração."
         );
+
+        document.getElementById("ia")
+        .textContent = "STANDBY";
 
         return;
     }
 
 
     document.getElementById("status")
-        .textContent =
-        "CONECTANDO AO N8N...";
-
+    .textContent = "CONECTANDO N8N...";
 
     try{
 
         const resposta =
-            await fetch(
-                N8N_WEBHOOK_URL,
-                {
-                    method:"POST",
+        await fetch(
+            N8N_WEBHOOK_URL,
+            {
+                method:"POST",
 
-                    headers:{
-                        "Content-Type":
-                        "application/json"
-                    },
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
 
-                    body:JSON.stringify({
+                body:JSON.stringify({
 
-                        command:comando,
+                    command:comando,
 
-                        message:comando,
+                    message:comando,
 
-                        source:
-                        "NEMIS_2.0",
+                    source:
+                    "NEMIS_2.0",
 
-                        language:
-                        "pt-BR",
+                    language:
+                    "pt-BR",
 
-                        timestamp:
-                        new Date()
-                        .toISOString()
+                    timestamp:
+                    new Date()
+                    .toISOString()
 
-                    })
-                }
-            );
+                })
+            }
+        );
 
 
         if(!resposta.ok){
@@ -336,14 +604,15 @@ async function enviar(){
 
 
         const dados =
-            await resposta.json();
+        await resposta.json();
 
 
         const respostaNEMIS =
-            dados.response ||
-            dados.answer ||
-            dados.message ||
-            "Comando recebido.";
+        dados.response ||
+        dados.answer ||
+        dados.message ||
+        dados.output ||
+        "Comando processado.";
 
 
         registrar(
@@ -357,9 +626,14 @@ async function enviar(){
         );
 
 
+        document.getElementById("n8n")
+        .textContent = "ONLINE";
+
+        document.getElementById("ia")
+        .textContent = "READY";
+
         document.getElementById("status")
-            .textContent =
-            "N8N ONLINE";
+        .textContent = "SYSTEM ONLINE";
 
 
     }catch(erro){
@@ -367,62 +641,89 @@ async function enviar(){
         console.error(erro);
 
         registrar(
-            "NEMIS: Erro na conexão com o n8n."
+            "NEMIS: falha na comunicação."
         );
 
         falar(
-            "Não consegui conectar ao n8n."
+            "Não consegui acessar o servidor."
         );
 
+        document.getElementById("n8n")
+        .textContent = "ERROR";
+
+        document.getElementById("ia")
+        .textContent = "READY";
+
         document.getElementById("status")
-            .textContent =
-            "ERRO N8N";
+        .textContent = "CONNECTION ERROR";
     }
 
 }
 
 
-/*
-==================================================
-VOZ
-==================================================
-*/
+/* ==========================================
+   RECONHECIMENTO DE VOZ
+   ========================================== */
 
-let reconhecimento;
+let reconhecimento = null;
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
 
 
-if(
-    "webkitSpeechRecognition"
-    in window
-){
+if(SpeechRecognition){
 
     reconhecimento =
-        new webkitSpeechRecognition();
+    new SpeechRecognition();
 
     reconhecimento.lang =
-        "pt-BR";
+    "pt-BR";
 
     reconhecimento.continuous =
-        false;
+    false;
 
     reconhecimento.interimResults =
-        false;
+    false;
+
+
+    reconhecimento.onstart =
+    function(){
+
+        document.getElementById("status")
+        .textContent = "OUVINDO...";
+
+        registrar(
+            "NEMIS: ouvindo."
+        );
+
+    };
 
 
     reconhecimento.onresult =
-        function(event){
+    function(event){
 
-            const texto =
-                event.results[0][0]
-                .transcript;
+        const texto =
+        event.results[0][0]
+        .transcript;
 
-            document.getElementById(
-                "comando"
-            ).value = texto;
+        document.getElementById(
+            "comando"
+        ).value = texto;
 
-            enviar();
+        enviar();
 
-        };
+    };
+
+
+    reconhecimento.onerror =
+    function(){
+
+        document.getElementById("status")
+        .textContent =
+        "SYSTEM ONLINE";
+
+    };
 
 }
 
@@ -436,7 +737,7 @@ function ouvir(){
     }else{
 
         falar(
-            "Reconhecimento de voz não disponível."
+            "O reconhecimento de voz não está disponível neste navegador."
         );
 
     }
@@ -444,43 +745,23 @@ function ouvir(){
 }
 
 
-/*
-==================================================
-RESPOSTA POR VOZ
-==================================================
-*/
+/* ENTER PARA ENVIAR */
 
-function falar(texto){
+document.getElementById(
+"comando"
+).addEventListener(
+"keydown",
+function(event){
 
-    if(
-        !("speechSynthesis" in window)
-    ){
-        return;
+    if(event.key === "Enter"){
+
+        enviar();
+
     }
 
-    speechSynthesis.cancel();
-
-    const voz =
-        new SpeechSynthesisUtterance(
-            texto
-        );
-
-    voz.lang =
-        "pt-BR";
-
-    voz.rate =
-        0.95;
-
-    voz.pitch =
-        1;
-
-    speechSynthesis.speak(
-        voz
-    );
-
-}
+});
 
 </script>
 
 </body>
-</html>
+      </html>
