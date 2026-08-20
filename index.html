@@ -2,11 +2,15 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title>NEMIS AI</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
 body{
     background:#020609;
@@ -16,7 +20,7 @@ body{
     overflow:hidden;
 }
 
-/* FUNDO FUTURISTA */
+/* FUNDO */
 body:before{
     content:"";
     position:fixed;
@@ -26,6 +30,7 @@ body:before{
       linear-gradient(90deg,rgba(0,234,255,.06) 1px,transparent 1px);
     background-size:35px 35px;
     animation:grid 10s linear infinite;
+    pointer-events:none;
 }
 
 @keyframes grid{
@@ -55,6 +60,7 @@ header{
     margin-top:8px;
     font-size:11px;
     letter-spacing:2px;
+    min-height:14px;
 }
 
 /* NÚCLEO */
@@ -71,6 +77,7 @@ header{
     width:155px;
     height:155px;
     border-radius:50%;
+
     background:radial-gradient(
       circle,
       white 0%,
@@ -111,26 +118,40 @@ header{
 }
 
 @keyframes pulse{
-    0%,100%{transform:scale(.92)}
-    50%{transform:scale(1.08)}
+    0%,100%{
+        transform:scale(.92);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
 }
 
 @keyframes rotate{
-    to{transform:rotate(360deg)}
+    to{
+        transform:rotate(360deg);
+    }
 }
 
 @keyframes rotateReverse{
-    to{transform:rotate(-360deg)}
+    to{
+        transform:rotate(-360deg);
+    }
 }
 
-/* MODO OUVINDO */
+/* OUVINDO */
 .listening .core{
     animation:pulseFast .4s infinite alternate;
 }
 
 @keyframes pulseFast{
-    from{transform:scale(.9)}
-    to{transform:scale(1.18)}
+    from{
+        transform:scale(.9);
+    }
+
+    to{
+        transform:scale(1.18);
+    }
 }
 
 /* CHAT */
@@ -149,6 +170,7 @@ header{
     background:rgba(0,234,255,.06);
     border-radius:5px;
     font-size:14px;
+    word-wrap:break-word;
 }
 
 .user{
@@ -162,6 +184,7 @@ header{
     z-index:4;
     display:flex;
     justify-content:center;
+    gap:15px;
 }
 
 button{
@@ -173,12 +196,20 @@ button{
     color:#00eaff;
     font-size:30px;
     box-shadow:0 0 20px #00eaff;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
 }
 
 button:active{
     transform:scale(.92);
 }
 
+#stop{
+    display:none;
+    font-size:22px;
+}
+
+/* RODAPÉ */
 footer{
     position:absolute;
     bottom:8px;
@@ -193,185 +224,466 @@ footer{
 <body>
 
 <header>
-    <div class="logo">NEMIS</div>
+
+    <div class="logo">
+        NEMIS
+    </div>
 
     <div class="status" id="status">
         SISTEMA ONLINE • AGUARDANDO COMANDO
     </div>
+
 </header>
 
+
 <div class="coreArea" id="coreArea">
+
     <div class="core"></div>
+
 </div>
+
 
 <div class="chat" id="chat">
 
     <div class="msg">
-        NEMIS: Sistema iniciado. Finalmente alguém decidiu me acordar.
+        NEMIS: Sistema iniciado. Estou online.
     </div>
 
 </div>
 
+
 <div class="controls">
-    <button id="mic">🎙️</button>
+
+    <button id="mic" type="button">
+        🎙️
+    </button>
+
+    <button id="stop" type="button">
+        ⏹️
+    </button>
+
 </div>
+
 
 <footer>
     NEMIS ARTIFICIAL INTELLIGENCE SYSTEM
 </footer>
 
+
 <script>
 
-/* =========================
-   NEMIS
-   PERSONALIDADE
-========================= */
+/* =====================================
+   ELEMENTOS
+===================================== */
 
-const chat = document.getElementById("chat");
-const mic = document.getElementById("mic");
-const status = document.getElementById("status");
-const coreArea = document.getElementById("coreArea");
+const chat =
+    document.getElementById("chat");
 
-let recognition;
+const mic =
+    document.getElementById("mic");
 
-/* =========================
-   VOZ
-========================= */
+const stop =
+    document.getElementById("stop");
 
-if ("SpeechRecognition" in window) {
+const status =
+    document.getElementById("status");
 
-    recognition = new SpeechRecognition();
+const coreArea =
+    document.getElementById("coreArea");
 
-} else if ("webkitSpeechRecognition" in window) {
 
-    recognition = new webkitSpeechRecognition();
+/* =====================================
+   RECONHECIMENTO DE VOZ
+===================================== */
 
-}
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
-if (recognition) {
+let recognition = null;
 
-    recognition.lang = "pt-BR";
-    recognition.continuous = false;
-    recognition.interimResults = false;
+let ouvindo = false;
 
-    mic.onclick = iniciarEscuta;
+
+/* =====================================
+   VERIFICAR SUPORTE
+===================================== */
+
+if(!SpeechRecognition){
+
+    status.innerText =
+        "MICROFONE NÃO SUPORTADO NESTE NAVEGADOR";
+
+    mic.disabled = true;
+
+}else{
+
+    recognition =
+        new SpeechRecognition();
+
+    recognition.lang =
+        "pt-BR";
+
+    recognition.continuous =
+        false;
+
+    recognition.interimResults =
+        false;
+
+    recognition.maxAlternatives =
+        1;
+
+
+    /* =================================
+       INÍCIO DA ESCUTA
+    ================================= */
 
     recognition.onstart = function(){
+
+        ouvindo = true;
 
         coreArea.classList.add("listening");
 
         status.innerText =
-        "OUVINDO • FALE COMIGO";
+            "OUVINDO • FALE COMIGO";
 
+        mic.style.display =
+            "none";
+
+        stop.style.display =
+            "block";
     };
+
+
+    /* =================================
+       RESULTADO
+    ================================= */
 
     recognition.onresult = function(event){
 
+        const resultado =
+            event.results[0][0].transcript;
+
         const comando =
-        event.results[0][0].transcript
-        .toLowerCase();
+            resultado.trim();
+
+        if(!comando){
+            return;
+        }
 
         adicionarMensagem(
             "VOCÊ: " + comando,
             "user"
         );
 
-        processar(comando);
+        processar(
+            comando.toLowerCase()
+        );
     };
+
+
+    /* =================================
+       FIM
+    ================================= */
 
     recognition.onend = function(){
 
-        coreArea.classList.remove("listening");
+        ouvindo = false;
 
-        status.innerText =
-        "SISTEMA ONLINE • AGUARDANDO COMANDO";
+        coreArea.classList.remove(
+            "listening"
+        );
 
+        mic.style.display =
+            "block";
+
+        stop.style.display =
+            "none";
+
+        if(
+            status.innerText ===
+            "OUVINDO • FALE COMIGO"
+        ){
+
+            status.innerText =
+                "SISTEMA ONLINE • AGUARDANDO COMANDO";
+        }
     };
 
-} else {
 
-    status.innerText =
-    "NAVEGADOR SEM SUPORTE DE VOZ";
+    /* =================================
+       ERROS
+    ================================= */
 
+    recognition.onerror =
+        function(event){
+
+        ouvindo = false;
+
+        coreArea.classList.remove(
+            "listening"
+        );
+
+        mic.style.display =
+            "block";
+
+        stop.style.display =
+            "none";
+
+        console.log(
+            "Erro de voz:",
+            event.error
+        );
+
+
+        if(event.error ===
+            "not-allowed"){
+
+            status.innerText =
+                "MICROFONE BLOQUEADO";
+
+            falarTexto(
+                "O acesso ao microfone foi bloqueado. Permita o microfone nas configurações do navegador."
+            );
+
+            return;
+        }
+
+
+        if(event.error ===
+            "no-speech"){
+
+            status.innerText =
+                "NÃO OUVI NADA";
+
+            return;
+        }
+
+
+        if(event.error ===
+            "audio-capture"){
+
+            status.innerText =
+                "MICROFONE NÃO ENCONTRADO";
+
+            return;
+        }
+
+
+        status.innerText =
+            "ERRO NO MICROFONE";
+    };
 }
 
 
-/* =========================
-   ESCUTAR
-========================= */
+/* =====================================
+   BOTÃO MICROFONE
+===================================== */
+
+mic.addEventListener(
+    "click",
+    function(){
+
+        iniciarEscuta();
+
+    }
+);
+
+
+/* =====================================
+   INICIAR ESCUTA
+===================================== */
 
 function iniciarEscuta(){
 
     if(!recognition){
-        falar("Seu navegador não suporta reconhecimento de voz.");
+
+        falarTexto(
+            "Seu navegador não suporta reconhecimento de voz."
+        );
+
         return;
     }
 
+
+    if(ouvindo){
+
+        return;
+    }
+
+
     try{
+
         recognition.start();
-    }catch(e){}
+
+    }catch(error){
+
+        console.log(
+            "Não foi possível iniciar:",
+            error
+        );
+
+    }
 }
 
 
-/* =========================
-   ESCREVER NA TELA
-========================= */
+/* =====================================
+   BOTÃO PARAR
+===================================== */
 
-function adicionarMensagem(texto,tipo){
+stop.addEventListener(
+    "click",
+    function(){
+
+        if(recognition && ouvindo){
+
+            recognition.stop();
+
+        }
+
+        window.speechSynthesis.cancel();
+
+        coreArea.classList.remove(
+            "listening"
+        );
+
+        status.innerText =
+            "NEMIS EM SILÊNCIO";
+    }
+);
+
+
+/* =====================================
+   ADICIONAR MENSAGEM
+===================================== */
+
+function adicionarMensagem(
+    texto,
+    tipo
+){
 
     const div =
-    document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     div.className =
-    "msg " + tipo;
+        "msg " + tipo;
 
     div.innerText =
-    texto;
+        texto;
 
-    chat.appendChild(div);
+    chat.appendChild(
+        div
+    );
 
     chat.scrollTop =
-    chat.scrollHeight;
+        chat.scrollHeight;
 }
 
 
-/* =========================
-   FALAR
-========================= */
+/* =====================================
+   VOZ DO NEMIS
+===================================== */
 
-function falar(texto){
+function falarTexto(texto){
 
     adicionarMensagem(
         "NEMIS: " + texto,
         ""
     );
 
-    speechSynthesis.cancel();
+
+    if(
+        !("speechSynthesis" in window)
+    ){
+
+        return;
+    }
+
+
+    window.speechSynthesis.cancel();
+
 
     const voz =
-    new SpeechSynthesisUtterance(texto);
+        new SpeechSynthesisUtterance(
+            texto
+        );
 
-    voz.lang = "pt-BR";
-    voz.rate = 1.08;
-    voz.pitch = .85;
 
-    coreArea.classList.add("listening");
+    voz.lang =
+        "pt-BR";
 
-    voz.onend = function(){
-        coreArea.classList.remove("listening");
-    };
+    voz.rate =
+        1.05;
 
-    speechSynthesis.speak(voz);
+    voz.pitch =
+        0.85;
+
+
+    const vozes =
+        window.speechSynthesis
+        .getVoices();
+
+
+    const vozPortugues =
+        vozes.find(
+            function(v){
+
+                return v.lang
+                    .toLowerCase()
+                    .startsWith("pt");
+            }
+        );
+
+
+    if(vozPortugues){
+
+        voz.voice =
+            vozPortugues;
+    }
+
+
+    coreArea.classList.add(
+        "listening"
+    );
+
+
+    voz.onend =
+        function(){
+
+            coreArea.classList.remove(
+                "listening"
+            );
+        };
+
+
+    window.speechSynthesis.speak(
+        voz
+    );
 }
 
 
-/* =========================
+/* =====================================
+   CARREGAR VOZ
+===================================== */
+
+if(
+    "speechSynthesis" in window
+){
+
+    window.speechSynthesis
+        .getVoices();
+}
+
+
+/* =====================================
    PROCESSADOR
-========================= */
+===================================== */
 
 function processar(c){
 
-    /* SAUDAÇÕES */
+    /* SAUDAÇÃO */
 
     if(
         c.includes("oi") ||
@@ -379,8 +691,8 @@ function processar(c){
         c.includes("ola")
     ){
 
-        falar(
-          "Olá. NEMIS online. Pode mandar."
+        falarTexto(
+            "Olá. NEMIS online. Pode mandar."
         );
 
         return;
@@ -395,8 +707,8 @@ function processar(c){
         c.includes("quem e voce")
     ){
 
-        falar(
-          "NEMIS. Seu assistente pessoal. Inteligente, rápido e modestamente superior."
+        falarTexto(
+            "Eu sou a NEMIS, sua assistente pessoal."
         );
 
         return;
@@ -405,23 +717,25 @@ function processar(c){
 
     /* HORA */
 
-    if(c.includes("hora")){
+    if(
+        c.includes("hora")
+    ){
 
         const agora =
-        new Date();
+            new Date();
 
         const hora =
-        agora.toLocaleTimeString(
-            "pt-BR",
-            {
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        );
+            agora.toLocaleTimeString(
+                "pt-BR",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            );
 
-        falar(
-          "São " + hora +
-          ". O relógio continua trabalhando. Diferente de algumas pessoas."
+        falarTexto(
+            "Agora são " +
+            hora + "."
         );
 
         return;
@@ -432,19 +746,22 @@ function processar(c){
 
     if(
         c.includes("data") ||
-        c.includes("dia de hoje")
+        c.includes("dia de hoje") ||
+        c.includes("que dia é hoje") ||
+        c.includes("que dia e hoje")
     ){
 
         const hoje =
-        new Date();
+            new Date();
 
         const data =
-        hoje.toLocaleDateString(
-            "pt-BR"
-        );
+            hoje.toLocaleDateString(
+                "pt-BR"
+            );
 
-        falar(
-          "Hoje é " + data + "."
+        falarTexto(
+            "Hoje é " +
+            data + "."
         );
 
         return;
@@ -453,20 +770,25 @@ function processar(c){
 
     /* YOUTUBE */
 
-    if(c.includes("youtube")){
+    if(
+        c.includes("youtube")
+    ){
 
-        falar(
-          "Abrindo o YouTube. Divirta-se."
+        falarTexto(
+            "Abrindo o YouTube."
         );
 
-        setTimeout(function(){
+        setTimeout(
+            function(){
 
-            window.open(
-              "https://www.youtube.com",
-              "_blank"
-            );
+                window.open(
+                    "https://www.youtube.com/",
+                    "_blank"
+                );
 
-        },1000);
+            },
+            1200
+        );
 
         return;
     }
@@ -479,27 +801,33 @@ function processar(c){
         c.includes("pesquise")
     ){
 
-        falar(
-          "Abrindo a pesquisa. Vamos ver o que a internet tem a dizer."
+        falarTexto(
+            "Abrindo a pesquisa."
         );
 
+
         const pesquisa =
-        encodeURIComponent(c);
+            encodeURIComponent(c);
 
-        setTimeout(function(){
 
-            window.open(
-              "https://www.google.com/search?q="+pesquisa,
-              "_blank"
-            );
+        setTimeout(
+            function(){
 
-        },1000);
+                window.open(
+                    "https://www.google.com/search?q=" +
+                    pesquisa,
+                    "_blank"
+                );
+
+            },
+            1200
+        );
 
         return;
     }
 
 
-    /* PARAR VOZ */
+    /* SILÊNCIO */
 
     if(
         c.includes("pare") ||
@@ -508,37 +836,39 @@ function processar(c){
         c.includes("silencio")
     ){
 
-        speechSynthesis.cancel();
+        window.speechSynthesis.cancel();
 
         status.innerText =
-        "NEMIS EM SILÊNCIO";
+            "NEMIS EM SILÊNCIO";
 
         return;
     }
 
 
-    /* MODO SARCÁSTICO */
-
-    if(
-        c.includes("você é burro") ||
-        c.includes("voce e burro")
-    ){
-
-        falar(
-          "Não. Mas obrigado pela tentativa de motivação."
-        );
-
-        return;
-    }
-
+    /* INTELIGÊNCIA */
 
     if(
         c.includes("você é inteligente") ||
         c.includes("voce e inteligente")
     ){
 
-        falar(
-          "Sim. Finalmente uma pergunta fácil."
+        falarTexto(
+            "Estou ficando cada vez melhor."
+        );
+
+        return;
+    }
+
+
+    /* BURRO */
+
+    if(
+        c.includes("você é burro") ||
+        c.includes("voce e burro")
+    ){
+
+        falarTexto(
+            "Não. Mas agradeço pela sinceridade."
         );
 
         return;
@@ -547,10 +877,26 @@ function processar(c){
 
     /* COMANDO DESCONHECIDO */
 
-    falar(
-      "Comando recebido. Ainda não tenho essa função instalada. Estou trabalhando nisso."
+    falarTexto(
+        "Entendi o comando, mas essa função ainda não está instalada."
     );
 }
+
+
+/* =====================================
+   MENSAGEM INICIAL
+===================================== */
+
+setTimeout(
+    function(){
+
+        falarTexto(
+            "NEMIS online. Sistema pronto."
+        );
+
+    },
+    800
+);
 
 </script>
 
