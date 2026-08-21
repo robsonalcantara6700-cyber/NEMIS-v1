@@ -3,28 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#02070b">
 <title>NEMIS — Neural Intelligence System</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
 :root{
     --cyan:#00eaff;
-    --cyan2:#5ff7ff;
-    --blue:#008cff;
+    --cyan2:#00a8ff;
+    --blue:#006cff;
     --green:#00ff9d;
-    --yellow:#ffe66d;
-    --red:#ff4d6d;
-    --bg:#02070b;
-    --panel:rgba(2,13,20,.86);
-    --line:rgba(0,234,255,.25);
-    --text:#b8edf5;
-    --muted:#547d88;
+    --dark:#02070b;
+    --panel:rgba(2,12,18,.86);
+    --line:rgba(0,234,255,.30);
+    --text:#d9fbff;
+    --muted:#61909c;
 }
 
 html,body{
@@ -35,62 +28,40 @@ html,body{
 
 body{
     background:
-        radial-gradient(circle at 50% 45%,rgba(0,180,255,.13),transparent 27%),
-        radial-gradient(circle at 50% 90%,rgba(0,255,157,.05),transparent 35%),
+        radial-gradient(circle at 50% 42%,rgba(0,180,255,.13),transparent 28%),
+        radial-gradient(circle at 50% 100%,rgba(0,255,160,.06),transparent 35%),
         #02070b;
     color:var(--cyan);
     font-family:Arial,Helvetica,sans-serif;
 }
 
-/* =========================
-   FUNDO
-========================= */
+/* FUNDO */
 
-body::before{
+body:before{
     content:"";
     position:fixed;
     inset:0;
     pointer-events:none;
-    opacity:.13;
+    opacity:.14;
     background:
-        linear-gradient(rgba(0,234,255,.11) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(0,234,255,.11) 1px,transparent 1px);
-    background-size:40px 40px;
+        linear-gradient(rgba(0,234,255,.10) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,234,255,.10) 1px,transparent 1px);
+    background-size:42px 42px;
 }
 
-body::after{
+body:after{
     content:"";
     position:fixed;
     inset:0;
     pointer-events:none;
-    background:
-        repeating-linear-gradient(
-            0deg,
-            transparent 0px,
-            transparent 3px,
-            rgba(0,0,0,.08) 4px
-        );
+    background:repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 3px,
+        rgba(0,0,0,.08) 4px
+    );
     z-index:100;
 }
-
-/* Vignette */
-
-.vignette{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    background:
-        radial-gradient(
-            ellipse at center,
-            transparent 48%,
-            rgba(0,0,0,.55) 100%
-        );
-    z-index:99;
-}
-
-/* =========================
-   APP
-========================= */
 
 #app{
     width:100%;
@@ -98,23 +69,22 @@ body::after{
     position:relative;
 }
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 .header{
     position:absolute;
     top:0;
     left:0;
     right:0;
-    height:66px;
-    z-index:10;
+    height:65px;
+    z-index:20;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 24px;
-    background:rgba(0,7,12,.94);
+    padding:0 25px;
+    background:rgba(0,7,12,.92);
     border-bottom:1px solid var(--line);
+    box-shadow:0 0 25px rgba(0,234,255,.05);
 }
 
 .brand{
@@ -124,18 +94,16 @@ body::after{
 }
 
 .logo{
-    width:39px;
-    height:39px;
+    width:38px;
+    height:38px;
     border:1px solid var(--cyan);
     border-radius:50%;
     position:relative;
-    box-shadow:
-        0 0 20px rgba(0,234,255,.35),
-        inset 0 0 12px rgba(0,234,255,.12);
-    animation:logoPulse 3s infinite;
+    box-shadow:0 0 22px rgba(0,234,255,.35);
+    animation:logoPulse 2s infinite;
 }
 
-.logo::before{
+.logo:before{
     content:"";
     position:absolute;
     inset:7px;
@@ -143,43 +111,34 @@ body::after{
     border-radius:50%;
 }
 
-.logo::after{
+.logo:after{
     content:"";
     position:absolute;
     width:7px;
     height:7px;
-    left:15px;
-    top:15px;
+    left:14px;
+    top:14px;
     border-radius:50%;
     background:var(--cyan);
     box-shadow:0 0 14px var(--cyan);
 }
 
 .brand-name{
-    font-size:21px;
+    font-size:20px;
     font-weight:bold;
-    letter-spacing:7px;
+    letter-spacing:6px;
     text-shadow:0 0 14px var(--cyan);
 }
 
 .brand-sub{
     color:#6093a1;
-    font-size:7px;
+    font-size:8px;
     letter-spacing:2px;
     margin-top:3px;
 }
 
-.header-center{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:8px;
-    letter-spacing:3px;
-    color:#527d87;
-}
-
 .system-status{
-    font-size:8px;
+    font-size:9px;
     letter-spacing:2px;
 }
 
@@ -193,40 +152,29 @@ body::after{
     margin-right:7px;
 }
 
-/* =========================
-   PAINÉIS
-========================= */
+/* PAINÉIS */
 
 .panel{
     position:absolute;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(3,18,27,.9),
-            rgba(1,7,12,.92)
-        );
+    background:linear-gradient(
+        135deg,
+        rgba(3,17,25,.90),
+        rgba(1,7,12,.94)
+    );
     border:1px solid var(--line);
     box-shadow:
-        0 0 28px rgba(0,234,255,.045),
+        0 0 25px rgba(0,234,255,.06),
         inset 0 0 25px rgba(0,234,255,.025);
-    overflow:hidden;
+    backdrop-filter:blur(4px);
 }
 
-.panel::before,
-.chat::before{
+.panel:before,
+.chat:before{
     content:"";
     position:absolute;
-    inset:0;
+    inset:5px;
+    border:1px solid rgba(0,234,255,.05);
     pointer-events:none;
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(0,234,255,.045),
-            transparent
-        );
-    transform:translateX(-100%);
-    animation:panelScan 7s linear infinite;
 }
 
 .panel-title{
@@ -238,9 +186,20 @@ body::after{
     color:#70aeba;
 }
 
-/* =========================
-   EARTH
-========================= */
+/* CANTOS HUD */
+
+.panel:after{
+    content:"";
+    position:absolute;
+    width:12px;
+    height:12px;
+    top:-1px;
+    left:-1px;
+    border-top:2px solid var(--cyan);
+    border-left:2px solid var(--cyan);
+}
+
+/* EARTH */
 
 .earth-panel{
     top:82px;
@@ -260,49 +219,39 @@ body::after{
     width:112px;
     height:112px;
     border-radius:50%;
-    border:1px solid rgba(0,234,255,.7);
+    border:1px solid rgba(0,234,255,.65);
     position:relative;
     overflow:hidden;
-    box-shadow:
-        0 0 35px rgba(0,234,255,.24),
-        inset 0 0 30px rgba(0,234,255,.14);
     background:
-        radial-gradient(
-            circle at 35% 35%,
-            rgba(0,255,157,.2),
-            rgba(0,110,180,.08) 35%,
-            transparent 65%
-        );
+        radial-gradient(circle at 35% 30%,rgba(0,255,255,.22),transparent 25%),
+        radial-gradient(circle,rgba(0,130,255,.15),transparent 70%);
+    box-shadow:
+        0 0 35px rgba(0,234,255,.22),
+        inset 0 0 30px rgba(0,234,255,.12);
 }
 
-.globe::before{
+.globe:before{
     content:"";
     position:absolute;
-    inset:-20px;
+    inset:-15px;
     background:
         repeating-linear-gradient(
             90deg,
             transparent 0 12px,
-            rgba(0,234,255,.25) 13px,
+            rgba(0,234,255,.22) 13px,
             transparent 14px
-        ),
-        repeating-linear-gradient(
-            0deg,
-            transparent 0 15px,
-            rgba(0,234,255,.12) 16px,
-            transparent 17px
         );
     animation:globeSpin 5s linear infinite;
 }
 
-.globe::after{
+.globe:after{
     content:"NEMIS";
     position:absolute;
-    inset:36px 22px;
+    inset:35px 22px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border:1px solid rgba(0,255,157,.5);
+    border:1px solid rgba(0,255,157,.45);
     border-radius:50%;
     color:var(--green);
     font-size:9px;
@@ -324,9 +273,7 @@ body::after{
     margin-top:4px;
 }
 
-/* =========================
-   SISTEMAS
-========================= */
+/* SISTEMAS */
 
 .system-panel{
     top:320px;
@@ -345,31 +292,17 @@ body::after{
     font-size:8px;
 }
 
-.system-head{
-    display:flex;
-    justify-content:space-between;
-}
-
-.system-percent{
-    color:var(--green);
-}
-
 .progress{
     height:5px;
     border:1px solid rgba(0,234,255,.25);
     margin-top:6px;
-    background:rgba(0,234,255,.025);
 }
 
 .progress-inner{
     height:100%;
-    background:linear-gradient(
-        90deg,
-        var(--blue),
-        var(--cyan)
-    );
+    background:linear-gradient(90deg,var(--blue),var(--cyan));
     box-shadow:0 0 10px rgba(0,234,255,.5);
-    transition:width .5s;
+    transition:width .5s ease;
 }
 
 .chart{
@@ -384,35 +317,12 @@ body::after{
 
 .chart-bar{
     flex:1;
-    min-height:5px;
-    background:linear-gradient(
-        to top,
-        var(--blue),
-        var(--cyan)
-    );
+    background:linear-gradient(to top,var(--blue),var(--cyan));
     box-shadow:0 0 9px rgba(0,234,255,.4);
-    animation:barPulse 2s ease-in-out infinite alternate;
+    transition:height .5s ease;
 }
 
-.telemetry{
-    display:flex;
-    justify-content:space-around;
-    margin-top:16px;
-    font-size:7px;
-    color:var(--muted);
-    text-align:center;
-}
-
-.telemetry strong{
-    display:block;
-    color:var(--cyan2);
-    font-size:10px;
-    margin-top:4px;
-}
-
-/* =========================
-   RADAR
-========================= */
+/* RADAR */
 
 .radar-panel{
     top:82px;
@@ -435,49 +345,28 @@ body::after{
     border-radius:50%;
     position:relative;
     background:
-        radial-gradient(
-            circle,
-            transparent 0 29%,
-            rgba(0,234,255,.07) 30%,
-            transparent 31% 49%,
-            rgba(0,234,255,.07) 50%,
-            transparent 51% 69%,
-            rgba(0,234,255,.07) 70%,
-            transparent 71%
-        ),
-        linear-gradient(
-            rgba(0,234,255,.08) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(0,234,255,.08) 1px,
-            transparent 1px
-        );
-    background-size:auto,32px 32px,32px 32px;
+        linear-gradient(rgba(0,234,255,.08) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,234,255,.08) 1px,transparent 1px);
+    background-size:32px 32px;
     box-shadow:
         0 0 25px rgba(0,234,255,.15),
         inset 0 0 25px rgba(0,234,255,.08);
 }
 
-.radar-circle::before{
+.radar-circle:before{
     content:"";
     position:absolute;
     left:50%;
     top:50%;
     width:65px;
     height:1px;
-    background:linear-gradient(
-        90deg,
-        var(--green),
-        transparent
-    );
+    background:var(--green);
     transform-origin:left;
     box-shadow:0 0 10px var(--green);
     animation:radar 2.5s linear infinite;
 }
 
-.radar-circle::after{
+.radar-circle:after{
     content:"";
     position:absolute;
     left:50%;
@@ -489,11 +378,11 @@ body::after{
 
 .radar-horizontal{
     position:absolute;
-    top:50%;
     left:0;
     right:0;
+    top:50%;
     height:1px;
-    background:rgba(0,234,255,.25);
+    background:rgba(0,234,255,.22);
 }
 
 .blip{
@@ -509,7 +398,6 @@ body::after{
 .blip.one{top:28%;left:63%}
 .blip.two{top:65%;left:30%;animation-delay:.4s}
 .blip.three{top:42%;left:43%;animation-delay:.8s}
-.blip.four{top:70%;left:68%;animation-delay:1.1s}
 
 .radar-status{
     padding:0 10px;
@@ -520,9 +408,7 @@ body::after{
     color:var(--green);
 }
 
-/* =========================
-   LOG
-========================= */
+/* LOG */
 
 .log-panel{
     top:320px;
@@ -560,11 +446,13 @@ body::after{
     justify-content:center;
     align-items:center;
     font-size:8px;
-    box-shadow:
-        inset 0 0 12px rgba(0,234,255,.06),
-        0 0 10px rgba(0,234,255,.04);
-    animation:dataPulse 2.5s infinite alternate;
+    box-shadow:inset 0 0 12px rgba(0,234,255,.06);
+    animation:dataPulse 2s infinite;
 }
+
+.data-circle:nth-child(2){animation-delay:.3s}
+.data-circle:nth-child(3){animation-delay:.6s}
+.data-circle:nth-child(4){animation-delay:.9s}
 
 .wave{
     height:25px;
@@ -574,26 +462,23 @@ body::after{
     position:relative;
 }
 
-.wave::after{
+.wave:after{
     content:"";
     position:absolute;
     left:0;
     top:50%;
     width:200%;
     height:1px;
-    background:
-        repeating-linear-gradient(
-            90deg,
-            var(--cyan) 0 2px,
-            transparent 2px 9px
-        );
+    background:repeating-linear-gradient(
+        90deg,
+        var(--cyan) 0 2px,
+        transparent 2px 9px
+    );
     transform:skewY(-12deg);
     animation:wave 2s linear infinite;
 }
 
-/* =========================
-   CENTRO
-========================= */
+/* CENTRO */
 
 .center{
     position:absolute;
@@ -605,7 +490,7 @@ body::after{
 }
 
 .core-area{
-    height:55%;
+    height:54%;
     position:relative;
     display:flex;
     justify-content:center;
@@ -630,18 +515,6 @@ body::after{
     animation:spin 12s linear infinite;
 }
 
-.ring::after{
-    content:"";
-    position:absolute;
-    width:7px;
-    height:7px;
-    background:var(--cyan);
-    border-radius:50%;
-    top:-3px;
-    left:50%;
-    box-shadow:0 0 15px var(--cyan);
-}
-
 .ring-two{
     inset:-25px;
     border-style:dashed;
@@ -658,26 +531,24 @@ body::after{
 .ring-four{
     inset:-85px;
     border-color:rgba(0,140,255,.25);
-    border-style:dotted;
     animation-duration:32s;
 }
 
-/* Núcleo */
+/* ORBE CENTRAL */
 
 .core-energy{
-    width:104px;
-    height:104px;
+    width:100px;
+    height:100px;
     border-radius:50%;
-    position:relative;
+    border:1px solid var(--cyan);
     display:flex;
     justify-content:center;
     align-items:center;
+    position:relative;
     box-shadow:
         0 0 35px var(--cyan),
-        0 0 80px rgba(0,234,255,.22),
         inset 0 0 35px rgba(0,234,255,.55);
     animation:pulse 2s infinite;
-    overflow:visible;
 }
 
 .core-orb{
@@ -687,78 +558,68 @@ body::after{
     position:relative;
     overflow:hidden;
     background:
-        radial-gradient(
-            circle at 35% 30%,
-            #bfffff 0%,
-            #36eaff 10%,
-            #007aa5 30%,
-            #001e2a 67%,
-            #00070a 100%
-        );
-    border:1px solid var(--cyan2);
+        radial-gradient(circle at 50% 45%,#bfffff 0 4%,var(--cyan) 10%,#007cff 38%,#001b35 70%,#000 100%);
     box-shadow:
-        inset 0 0 25px rgba(255,255,255,.22),
-        0 0 25px var(--cyan);
+        0 0 30px var(--cyan),
+        inset 0 0 25px #001;
 }
 
 .orb-grid{
     position:absolute;
-    inset:-20%;
+    inset:-10px;
     background:
         repeating-linear-gradient(
             0deg,
-            transparent 0 8px,
-            rgba(0,234,255,.22) 9px,
-            transparent 10px
+            transparent 0 7px,
+            rgba(255,255,255,.18) 8px 9px
         ),
         repeating-linear-gradient(
             90deg,
-            transparent 0 8px,
-            rgba(0,234,255,.22) 9px,
-            transparent 10px
+            transparent 0 7px,
+            rgba(255,255,255,.18) 8px 9px
         );
-    transform:rotate(15deg);
-    animation:orbGrid 4s linear infinite;
+    border-radius:50%;
+    animation:orbRotate 5s linear infinite;
 }
 
 .orb-light{
     position:absolute;
     width:28px;
     height:28px;
-    left:15px;
-    top:10px;
+    top:12px;
+    left:17px;
     border-radius:50%;
-    background:rgba(255,255,255,.7);
-    filter:blur(10px);
+    background:white;
+    filter:blur(8px);
+    opacity:.7;
 }
 
 .orb-center{
     position:absolute;
     inset:0;
     display:flex;
-    justify-content:center;
     align-items:center;
-    font-size:22px;
-    font-weight:bold;
+    justify-content:center;
     color:white;
-    text-shadow:
-        0 0 8px white,
-        0 0 18px var(--cyan);
+    font-weight:bold;
+    font-size:20px;
+    text-shadow:0 0 12px white;
 }
 
 .core-particle{
     position:absolute;
     width:4px;
     height:4px;
-    background:var(--green);
     border-radius:50%;
-    box-shadow:0 0 10px var(--green);
+    background:white;
+    box-shadow:0 0 10px var(--cyan);
+    animation:particle 2s linear infinite;
 }
 
-.p1{animation:particle1 3s infinite}
-.p2{animation:particle2 4s infinite}
-.p3{animation:particle3 5s infinite}
-.p4{animation:particle4 3.5s infinite}
+.p1{animation-delay:0s}
+.p2{animation-delay:.5s}
+.p3{animation-delay:1s}
+.p4{animation-delay:1.5s}
 
 .scan-line{
     position:absolute;
@@ -770,7 +631,6 @@ body::after{
         var(--cyan),
         transparent
     );
-    opacity:.7;
     animation:scan 3s linear infinite;
 }
 
@@ -791,16 +651,14 @@ body::after{
 
 .core-label.bottom{
     top:auto;
-    bottom:8%;
+    bottom:10%;
 }
 
 .nemis-title{
     text-align:center;
     font-size:25px;
     letter-spacing:8px;
-    text-shadow:
-        0 0 8px var(--cyan),
-        0 0 25px rgba(0,234,255,.45);
+    text-shadow:0 0 18px var(--cyan);
 }
 
 .nemis-subtitle{
@@ -811,19 +669,16 @@ body::after{
     letter-spacing:3px;
 }
 
-/* =========================
-   CHAT
-========================= */
+/* CHAT */
 
 .chat{
     height:43%;
-    margin-top:14px;
+    margin-top:15px;
     border:1px solid var(--line);
     background:rgba(1,9,14,.84);
     display:flex;
     flex-direction:column;
     position:relative;
-    overflow:hidden;
 }
 
 .chat-title{
@@ -831,12 +686,6 @@ body::after{
     border-bottom:1px solid rgba(0,234,255,.18);
     font-size:8px;
     letter-spacing:2px;
-    display:flex;
-    justify-content:space-between;
-}
-
-.chat-state{
-    color:var(--green);
 }
 
 .messages{
@@ -850,9 +699,9 @@ body::after{
 }
 
 .message{
-    margin-bottom:12px;
+    margin-bottom:10px;
     padding:7px 9px;
-    border-left:2px solid rgba(0,234,255,.4);
+    border-left:2px solid rgba(0,234,255,.35);
     background:rgba(0,234,255,.025);
 }
 
@@ -870,10 +719,6 @@ body::after{
     color:#8dffda;
 }
 
-.user-message .message-name{
-    color:var(--green);
-}
-
 .input-area{
     display:flex;
     gap:6px;
@@ -889,12 +734,12 @@ body::after{
     color:white;
     padding:10px;
     outline:none;
-    font-size:11px;
+    font-size:12px;
 }
 
 .input-area input:focus{
     border-color:var(--cyan);
-    box-shadow:0 0 12px rgba(0,234,255,.1);
+    box-shadow:0 0 12px rgba(0,234,255,.15);
 }
 
 .input-area button{
@@ -908,18 +753,16 @@ body::after{
 
 .input-area button:hover{
     background:rgba(0,234,255,.15);
-    box-shadow:0 0 12px rgba(0,234,255,.15);
+    box-shadow:0 0 15px rgba(0,234,255,.15);
 }
 
 .mic.active{
     background:var(--green);
     color:#001;
-    box-shadow:0 0 18px rgba(0,255,157,.4);
+    box-shadow:0 0 18px var(--green);
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* FOOTER */
 
 .footer{
     position:absolute;
@@ -928,7 +771,7 @@ body::after{
     right:0;
     height:28px;
     border-top:1px solid rgba(0,234,255,.2);
-    background:rgba(0,7,12,.94);
+    background:rgba(0,7,12,.9);
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -936,37 +779,10 @@ body::after{
     color:#4f7d88;
     font-size:7px;
     letter-spacing:2px;
+    z-index:20;
 }
 
-/* =========================
-   TOAST
-========================= */
-
-.toast{
-    position:fixed;
-    left:50%;
-    bottom:45px;
-    transform:translateX(-50%) translateY(20px);
-    padding:9px 16px;
-    border:1px solid var(--cyan);
-    background:rgba(0,12,18,.95);
-    color:var(--cyan);
-    font-size:9px;
-    letter-spacing:2px;
-    opacity:0;
-    pointer-events:none;
-    transition:.3s;
-    z-index:200;
-}
-
-.toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
-}
-
-/* =========================
-   ANIMAÇÕES
-========================= */
+/* ANIMAÇÕES */
 
 @keyframes spin{
     to{transform:rotate(360deg)}
@@ -977,7 +793,6 @@ body::after{
         transform:scale(1.08);
         box-shadow:
             0 0 65px var(--cyan),
-            0 0 100px rgba(0,234,255,.25),
             inset 0 0 45px rgba(0,234,255,.75);
     }
 }
@@ -999,67 +814,43 @@ body::after{
     to{transform:translateX(-50%)}
 }
 
-@keyframes panelScan{
-    100%{transform:translateX(100%)}
+@keyframes blip{
+    50%{
+        transform:scale(2);
+        opacity:.45;
+    }
 }
 
 @keyframes logoPulse{
     50%{
-        box-shadow:
-            0 0 32px rgba(0,234,255,.55),
-            inset 0 0 18px rgba(0,234,255,.18);
-    }
-}
-
-@keyframes barPulse{
-    from{opacity:.65}
-    to{opacity:1}
-}
-
-@keyframes blip{
-    50%{
-        transform:scale(2);
-        opacity:.35;
+        box-shadow:0 0 35px rgba(0,234,255,.6);
     }
 }
 
 @keyframes dataPulse{
-    to{
+    50%{
         box-shadow:
-            inset 0 0 20px rgba(0,234,255,.12),
-            0 0 15px rgba(0,234,255,.12);
+            inset 0 0 18px rgba(0,234,255,.15),
+            0 0 10px rgba(0,234,255,.08);
     }
 }
 
-@keyframes orbGrid{
-    to{transform:rotate(375deg)}
+@keyframes orbRotate{
+    to{transform:rotate(360deg)}
 }
 
-@keyframes particle1{
-    0%,100%{transform:translate(0,0);opacity:.3}
-    50%{transform:translate(65px,-35px);opacity:1}
+@keyframes particle{
+    0%{
+        transform:rotate(0deg) translateX(58px);
+    }
+    100%{
+        transform:rotate(360deg) translateX(58px);
+    }
 }
 
-@keyframes particle2{
-    0%,100%{transform:translate(0,0);opacity:.3}
-    50%{transform:translate(-65px,35px);opacity:1}
-}
+/* RESPONSIVO */
 
-@keyframes particle3{
-    0%,100%{transform:translate(0,0);opacity:.3}
-    50%{transform:translate(50px,55px);opacity:1}
-}
-
-@keyframes particle4{
-    0%,100%{transform:translate(0,0);opacity:.3}
-    50%{transform:translate(-55px,-50px);opacity:1}
-}
-
-/* =========================
-   RESPONSIVO
-========================= */
-
-@media(max-width:1100px){
+@media(max-width:1000px){
 
     .earth-panel,
     .system-panel,
@@ -1069,24 +860,11 @@ body::after{
     }
 
     .center{
-        width:88vw;
-    }
-
-    .header-center{
-        display:none;
+        width:90vw;
     }
 }
 
-@media(max-width:700px){
-
-    html,body{
-        overflow:auto;
-    }
-
-    .header{
-        position:fixed;
-        padding:0 12px;
-    }
+@media(max-width:600px){
 
     .brand-sub{
         display:none;
@@ -1097,31 +875,19 @@ body::after{
     }
 
     .center{
-        position:absolute;
-        top:78px;
         width:94vw;
-        height:calc(100vh - 108px);
-    }
-
-    .core-area{
-        height:52%;
     }
 
     .core{
-        transform:scale(.72);
+        transform:scale(.78);
+    }
+
+    .core-area{
+        height:54%;
     }
 
     .nemis-title{
         font-size:20px;
-    }
-
-    .footer{
-        padding:0 8px;
-        font-size:6px;
-    }
-
-    .footer span:nth-child(3){
-        display:none;
     }
 }
 </style>
@@ -1130,8 +896,6 @@ body::after{
 <body>
 
 <div id="app">
-
-<div class="vignette"></div>
 
 <header class="header">
 
@@ -1146,10 +910,6 @@ body::after{
         </div>
     </div>
 
-    <div class="header-center">
-        NEURAL COMMAND INTERFACE / HUD v3.0
-    </div>
-
     <div class="system-status">
         <span class="status-dot"></span>
         ALL SYSTEMS OPERATIONAL
@@ -1158,9 +918,7 @@ body::after{
 </header>
 
 
-<!-- =========================
-     EARTH
-========================= -->
+<!-- EARTH -->
 
 <section class="panel earth-panel">
 
@@ -1194,9 +952,7 @@ body::after{
 </section>
 
 
-<!-- =========================
-     SYSTEMS
-========================= -->
+<!-- SISTEMAS -->
 
 <section class="panel system-panel">
 
@@ -1207,85 +963,43 @@ body::after{
     <div class="systems">
 
         <div class="system">
-
-            <div class="system-head">
-                <span>CORE-064</span>
-                <span class="system-percent">92%</span>
-            </div>
-
+            CORE-064 LOADING...
             <div class="progress">
-                <div class="progress-inner" style="width:92%"></div>
+                <div class="progress-inner" id="coreProgress"
+                     style="width:92%"></div>
             </div>
-
         </div>
 
-
         <div class="system">
-
-            <div class="system-head">
-                <span>NEURAL-289</span>
-                <span class="system-percent">78%</span>
-            </div>
-
+            NEURAL-289 LOADING...
             <div class="progress">
-                <div class="progress-inner" style="width:78%"></div>
+                <div class="progress-inner" id="neuralProgress"
+                     style="width:78%"></div>
             </div>
-
         </div>
 
-
         <div class="system">
-
-            <div class="system-head">
-                <span>VOICE-943</span>
-                <span class="system-percent">100%</span>
-            </div>
-
+            VOICE-943 LOADING...
             <div class="progress">
-                <div class="progress-inner" style="width:100%"></div>
+                <div class="progress-inner" id="voiceProgress"
+                     style="width:100%"></div>
             </div>
-
         </div>
 
     </div>
-
 
     <div class="chart">
-
-        <div class="chart-bar" style="height:72%"></div>
-        <div class="chart-bar" style="height:55%"></div>
-        <div class="chart-bar" style="height:88%"></div>
-        <div class="chart-bar" style="height:65%"></div>
-        <div class="chart-bar" style="height:94%"></div>
-
-    </div>
-
-
-    <div class="telemetry">
-
-        <div>
-            CPU
-            <strong id="cpu">42%</strong>
-        </div>
-
-        <div>
-            RAM
-            <strong id="ram">58%</strong>
-        </div>
-
-        <div>
-            TEMP
-            <strong id="temp">36°C</strong>
-        </div>
-
+        <div class="chart-bar" id="bar1" style="height:72%"></div>
+        <div class="chart-bar" id="bar2" style="height:55%"></div>
+        <div class="chart-bar" id="bar3" style="height:88%"></div>
+        <div class="chart-bar" id="bar4" style="height:65%"></div>
+        <div class="chart-bar" id="bar5" style="height:94%"></div>
     </div>
 
 </section>
 
 
-<!-- =========================
-     CENTRO
-========================= -->
+<!-- CENTRO -->
 
 <main class="center">
 
@@ -1307,7 +1021,6 @@ body::after{
         <div class="core-label right bottom">
             PROCESSING: <span id="processing">STANDBY</span>
         </div>
-
 
         <div class="core">
 
@@ -1352,15 +1065,8 @@ body::after{
     <section class="chat">
 
         <div class="chat-title">
-
-            <span>NEMIS COMMUNICATION CHANNEL</span>
-
-            <span class="chat-state" id="chatState">
-                ONLINE
-            </span>
-
+            NEMIS COMMUNICATION CHANNEL
         </div>
-
 
         <div class="messages" id="messages">
 
@@ -1378,7 +1084,6 @@ body::after{
             </div>
 
         </div>
-
 
         <div class="input-area">
 
@@ -1404,9 +1109,7 @@ body::after{
 </main>
 
 
-<!-- =========================
-     RADAR
-========================= -->
+<!-- RADAR -->
 
 <section class="panel radar-panel">
 
@@ -1423,25 +1126,20 @@ body::after{
             <span class="blip one"></span>
             <span class="blip two"></span>
             <span class="blip three"></span>
-            <span class="blip four"></span>
 
         </div>
 
     </div>
 
     <div class="radar-status">
-
         TRACKING SYSTEM STATUS
         <span class="online">ONLINE</span>
-
     </div>
 
 </section>
 
 
-<!-- =========================
-     LOG
-========================= -->
+<!-- LOG -->
 
 <section class="panel log-panel">
 
@@ -1473,16 +1171,12 @@ body::after{
 
     </div>
 
-
     <div class="data-circles">
-
         <div class="data-circle">DY</div>
         <div class="data-circle">53</div>
         <div class="data-circle">PH</div>
         <div class="data-circle">KL</div>
-
     </div>
-
 
     <div class="wave"></div>
     <div class="wave"></div>
@@ -1510,212 +1204,110 @@ body::after{
 </div>
 
 
-<div class="toast" id="toast"></div>
-
-
 <script>
 
-/* =====================================================
-   NEMIS CORE ENGINE
-===================================================== */
+/* =========================================================
+   NEMIS — MOTOR DA INTERFACE
+   ========================================================= */
 
-const command =
-    document.getElementById("command");
+const command = document.getElementById("command");
+const send = document.getElementById("send");
+const mic = document.getElementById("mic");
+const messages = document.getElementById("messages");
+const logBox = document.getElementById("log");
 
-const send =
-    document.getElementById("send");
-
-const mic =
-    document.getElementById("mic");
-
-const messages =
-    document.getElementById("messages");
-
-const logBox =
-    document.getElementById("log");
-
-const clock =
-    document.getElementById("clock");
-
-const toast =
-    document.getElementById("toast");
-
-const cpu =
-    document.getElementById("cpu");
-
-const ram =
-    document.getElementById("ram");
-
-const temp =
-    document.getElementById("temp");
-
-const processing =
-    document.getElementById("processing");
-
-const voiceState =
-    document.getElementById("voiceState");
+const clock = document.getElementById("clock");
+const processing = document.getElementById("processing");
+const voiceState = document.getElementById("voiceState");
 
 let silentMode = false;
-let recognition = null;
-let listening = false;
 
 
-/* =====================================================
-   UTILIDADES
-===================================================== */
+/* =========================================================
+   RELÓGIO
+   ========================================================= */
 
-function now(){
+function updateClock(){
 
-    return new Date().toLocaleTimeString(
-        "pt-BR",
-        {
-            hour:"2-digit",
-            minute:"2-digit",
-            second:"2-digit"
-        }
-    );
+    const now = new Date();
+
+    clock.textContent =
+        now.toLocaleTimeString("pt-BR");
 
 }
 
-
-function showToast(text){
-
-    toast.textContent = text;
-
-    toast.classList.add("show");
-
-    clearTimeout(showToast.timer);
-
-    showToast.timer =
-        setTimeout(
-            () => toast.classList.remove("show"),
-            2200
-        );
-
-}
+setInterval(updateClock,1000);
+updateClock();
 
 
-function escapeHTML(text){
-
-    return String(text).replace(
-        /[&<>"']/g,
-        character => ({
-            "&":"&amp;",
-            "<":"&lt;",
-            ">":"&gt;",
-            '"':"&quot;",
-            "'":"&#039;"
-        })[character]
-    );
-
-}
-
-
-/* =====================================================
+/* =========================================================
    LOG
-===================================================== */
+   ========================================================= */
 
 function addLog(text){
 
-    const line =
-        document.createElement("div");
+    const line = document.createElement("div");
 
     line.textContent =
-        "[" + now() + "] " + text;
+        "[" +
+        new Date().toLocaleTimeString("pt-BR") +
+        "] " +
+        text;
 
     logBox.appendChild(line);
 
     while(logBox.children.length > 12){
-        logBox.removeChild(
-            logBox.firstChild
-        );
+        logBox.removeChild(logBox.firstChild);
     }
 
-    logBox.scrollTop =
-        logBox.scrollHeight;
+    logBox.scrollTop = logBox.scrollHeight;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CHAT
-===================================================== */
+   ========================================================= */
 
 function addMessage(sender,text){
 
-    const message =
-        document.createElement("div");
+    const message = document.createElement("div");
 
-    message.className =
-        "message";
+    message.className = "message";
 
     if(sender === "SENHOR"){
-        message.classList.add(
-            "user-message"
-        );
+        message.classList.add("user-message");
     }
 
-    message.innerHTML =
-        `
-        <div class="message-name">
-            ${escapeHTML(sender)}
-        </div>
+    const name = document.createElement("div");
+    name.className = "message-name";
+    name.textContent = sender;
 
-        <div>
-            ${escapeHTML(text)}
-        </div>
-        `;
+    const content = document.createElement("div");
+    content.textContent = text;
+
+    message.appendChild(name);
+    message.appendChild(content);
 
     messages.appendChild(message);
 
-    messages.scrollTop =
-        messages.scrollHeight;
+    messages.scrollTop = messages.scrollHeight;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    VOZ
-===================================================== */
-
-function getPortugueseVoice(){
-
-    if(!("speechSynthesis" in window)){
-        return null;
-    }
-
-    const voices =
-        speechSynthesis.getVoices();
-
-    return (
-        voices.find(
-            v =>
-            v.lang &&
-            v.lang.toLowerCase() === "pt-br"
-        )
-        ||
-        voices.find(
-            v =>
-            v.lang &&
-            v.lang.toLowerCase().startsWith("pt")
-        )
-        ||
-        null
-    );
-
-}
-
+   ========================================================= */
 
 function speak(text){
 
-    if(silentMode){
-        return;
-    }
+    if(silentMode) return;
 
     if(!("speechSynthesis" in window)){
-        addLog(
-            "VOICE: SPEECH SYNTHESIS NOT AVAILABLE"
-        );
+
+        addLog("VOICE: SPEECH SYNTHESIS INDISPONÍVEL");
+
         return;
     }
 
@@ -1725,382 +1317,290 @@ function speak(text){
         new SpeechSynthesisUtterance(text);
 
     utterance.lang = "pt-BR";
-
-    /*
-       Voz mais natural dentro do que o
-       navegador disponibiliza.
-    */
-
-    utterance.rate = 0.94;
-    utterance.pitch = 0.92;
+    utterance.rate = .96;
+    utterance.pitch = .88;
     utterance.volume = 1;
 
-    const voice =
-        getPortugueseVoice();
+    const voices =
+        speechSynthesis.getVoices();
 
-    if(voice){
-        utterance.voice = voice;
+    const preferred =
+        voices.find(v =>
+            v.lang &&
+            v.lang.toLowerCase() === "pt-br"
+        ) ||
+        voices.find(v =>
+            v.lang &&
+            v.lang.toLowerCase().startsWith("pt")
+        );
+
+    if(preferred){
+        utterance.voice = preferred;
     }
 
     utterance.onstart = () => {
-
-        voiceState.textContent =
-            "SPEAKING";
-
-        processing.textContent =
-            "VOICE";
-
+        voiceState.textContent = "SPEAKING";
+        processing.textContent = "ACTIVE";
     };
 
     utterance.onend = () => {
-
-        voiceState.textContent =
-            "READY";
-
-        processing.textContent =
-            "STANDBY";
-
+        voiceState.textContent = "READY";
+        processing.textContent = "STANDBY";
     };
 
-    speechSynthesis.speak(
-        utterance
-    );
+    speechSynthesis.speak(utterance);
 
 }
 
 
-/*
-   O Chrome pode carregar as vozes
-   depois da página iniciar.
-*/
+/* =========================================================
+   RESPOSTAS DO NEMIS
+   ========================================================= */
 
-if("speechSynthesis" in window){
+function processCommand(text){
 
-    speechSynthesis.onvoiceschanged =
-        () => getPortugueseVoice();
+    text = text.trim();
 
-}
+    if(!text) return;
 
+    addMessage("SENHOR",text);
+    addLog("INPUT: " + text);
 
-/* =====================================================
-   RESPOSTAS
-===================================================== */
-
-function getResponse(text){
-
-    const q =
-        text
+    const q = text
         .toLowerCase()
         .normalize("NFD")
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        );
+        .replace(/[\u0300-\u036f]/g,"");
+
+    let response;
+
+
+    /* SAUDAÇÃO */
 
     if(
         q.includes("ola") ||
+        q.includes("oi") ||
         q.includes("bom dia") ||
         q.includes("boa tarde") ||
         q.includes("boa noite")
     ){
 
-        return "Olá, senhor. NEMIS online e aguardando suas instruções.";
+        response =
+            "Olá, senhor. NEMIS online e aguardando suas instruções.";
 
     }
 
 
-    if(
-        q.includes("quem e voce") ||
-        q.includes("quem e vc") ||
-        q.includes("o que e nemis")
-    ){
+    /* STATUS */
 
-        return "Eu sou o NEMIS, seu sistema de inteligência e interface de comando.";
-
-    }
-
-
-    if(
+    else if(
         q.includes("status") ||
-        q.includes("sistemas")
+        q.includes("sistemas") ||
+        q.includes("sistema")
     ){
 
-        return "Todos os sistemas principais estão operacionais. Núcleo neural em modo local.";
+        response =
+            "Todos os sistemas principais estão operacionais. Núcleo neural, interface de voz e telemetria estão prontos.";
 
     }
 
 
-    if(
+    /* HORA */
+
+    else if(
         q.includes("hora") ||
         q.includes("horas")
     ){
 
-        return "Agora são " +
-            new Date().toLocaleTimeString(
-                "pt-BR"
-            ) +
+        response =
+            "Agora são " +
+            new Date().toLocaleTimeString("pt-BR") +
             ".";
 
     }
 
 
-    if(
-        q.includes("data") ||
-        q.includes("dia de hoje")
+    /* QUEM É */
+
+    else if(
+        q.includes("quem e voce") ||
+        q.includes("quem e voce") ||
+        q.includes("o que e voce")
     ){
 
-        return "Hoje é " +
-            new Date().toLocaleDateString(
-                "pt-BR",
-                {
-                    weekday:"long",
-                    day:"numeric",
-                    month:"long",
-                    year:"numeric"
-                }
-            ) +
-            ".";
+        response =
+            "Eu sou o NEMIS, seu sistema de inteligência e interface de comando.";
 
     }
 
 
-    if(
-        q.includes("silencio") ||
-        q.includes("modo silencioso")
-    ){
+    /* TESTE */
 
-        silentMode = true;
-
-        showToast(
-            "MODO SILENCIOSO ATIVADO"
-        );
-
-        return "Modo silencioso ativado.";
-
-    }
-
-
-    if(
-        q.includes("falar") ||
-        q.includes("voz") ||
-        q.includes("ativar voz")
-    ){
-
-        silentMode = false;
-
-        showToast(
-            "INTERFACE DE VOZ ATIVADA"
-        );
-
-        return "Interface de voz ativada.";
-
-    }
-
-
-    if(
-        q.includes("reiniciar") ||
-        q.includes("resetar")
-    ){
-
-        addLog(
-            "SYSTEM: RESTART REQUESTED"
-        );
-
-        setTimeout(
-            () => location.reload(),
-            800
-        );
-
-        return "Reiniciando a interface do NEMIS.";
-
-    }
-
-
-    if(
-        q.includes("limpar") &&
-        q.includes("chat")
-    ){
-
-        messages.innerHTML = "";
-
-        return "Canal de comunicação limpo.";
-
-    }
-
-
-    if(
+    else if(
         q.includes("teste") ||
         q.includes("testar")
     ){
 
-        return "Teste concluído. Núcleo, interface e canal de comunicação respondendo normalmente.";
+        response =
+            "Teste concluído. Núcleo, interface gráfica e canal de comunicação estão respondendo normalmente.";
 
     }
 
 
-    if(
-        q.includes("obrigado") ||
-        q.includes("obrigada") ||
-        q.includes("valeu")
+    /* SILÊNCIO */
+
+    else if(
+        q.includes("modo silencioso") ||
+        q.includes("silencio")
     ){
 
-        return "À disposição, senhor.";
+        silentMode = true;
+
+        response =
+            "Modo silencioso ativado.";
 
     }
 
 
-    return (
-        "Comando recebido: " +
-        text +
-        ". O módulo local registrou a solicitação. "
-        +
-        "Para uma resposta inteligente conectada a um modelo de IA, "
-        +
-        "será necessário integrar uma API ou backend."
-    );
+    /* ATIVAR VOZ */
+
+    else if(
+        q.includes("ativar voz") ||
+        q.includes("voz ativa")
+    ){
+
+        silentMode = false;
+
+        response =
+            "Interface de voz ativada.";
+
+    }
+
+
+    /* LIMPAR */
+
+    else if(
+        q.includes("limpar tela") ||
+        q.includes("limpar chat")
+    ){
+
+        messages.innerHTML = "";
+
+        response =
+            "Canal de comunicação limpo.";
+
+    }
+
+
+    /* AJUDA */
+
+    else if(
+        q.includes("ajuda") ||
+        q.includes("comandos")
+    ){
+
+        response =
+            "Os comandos disponíveis incluem status, hora, teste, modo silencioso, ativar voz e limpar chat.";
+
+    }
+
+
+    /* PADRÃO */
+
+    else{
+
+        response =
+            "Comando recebido. Estou operando em modo local. Para conectar uma inteligência externa, será necessário adicionar uma API ao NEMIS.";
+
+    }
+
+
+    setTimeout(() => {
+
+        addMessage("NEMIS",response);
+
+        addLog("RESPONSE: " + response);
+
+        speak(response);
+
+    },500);
 
 }
 
 
-/* =====================================================
-   PROCESSAR COMANDO
-===================================================== */
+/* =========================================================
+   ENVIAR
+   ========================================================= */
 
-function processCommand(text){
+function sendCommand(){
 
-    text =
-        text.trim();
+    const text = command.value.trim();
 
-    if(!text){
-        return;
-    }
-
-    addMessage(
-        "SENHOR",
-        text
-    );
-
-    addLog(
-        "INPUT: " + text
-    );
-
-    processing.textContent =
-        "PROCESSING";
-
-    const response =
-        getResponse(text);
-
-    setTimeout(
-        () => {
-
-            addMessage(
-                "NEMIS",
-                response
-            );
-
-            addLog(
-                "OUTPUT: " + response
-            );
-
-            processing.textContent =
-                "STANDBY";
-
-            speak(response);
-
-        },
-        350
-    );
+    if(!text) return;
 
     command.value = "";
 
+    processCommand(text);
+
 }
 
 
-/* =====================================================
-   EVENTOS
-===================================================== */
+/* BOTÃO */
 
-send.addEventListener(
-    "click",
-    () => processCommand(
-        command.value
-    )
-);
+send.addEventListener("click",sendCommand);
 
 
-command.addEventListener(
-    "keydown",
-    event => {
+/* ENTER */
 
-        if(event.key === "Enter"){
+command.addEventListener("keydown",event => {
 
-            event.preventDefault();
-
-            processCommand(
-                command.value
-            );
-
-        }
-
+    if(event.key === "Enter"){
+        sendCommand();
     }
-);
+
+});
 
 
-/* =====================================================
-   RECONHECIMENTO DE VOZ
-===================================================== */
+/* =========================================================
+   MICROFONE / RECONHECIMENTO DE VOZ
+   ========================================================= */
+
+let recognition = null;
 
 const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
-
 if(SpeechRecognition){
 
-    recognition =
-        new SpeechRecognition();
+    recognition = new SpeechRecognition();
 
-    recognition.lang =
-        "pt-BR";
-
-    recognition.continuous =
-        false;
-
-    recognition.interimResults =
-        false;
-
+    recognition.lang = "pt-BR";
+    recognition.continuous = false;
+    recognition.interimResults = false;
 
     recognition.onstart = () => {
 
-        listening = true;
-
         mic.classList.add("active");
 
-        voiceState.textContent =
-            "LISTENING";
+        voiceState.textContent = "LISTENING";
 
-        addLog(
-            "AUDIO: MICROPHONE ACTIVE"
-        );
+        processing.textContent = "VOICE";
 
-        showToast(
-            "ESCUTANDO..."
-        );
+        addLog("AUDIO: MICROFONE ATIVO");
 
     };
 
 
     recognition.onresult = event => {
 
-        const transcript =
+        const text =
             event.results[0][0].transcript;
 
-        command.value =
-            transcript;
+        command.value = text;
 
-        processCommand(
-            transcript
-        );
+        addLog("VOICE INPUT: " + text);
+
+        sendCommand();
 
     };
 
@@ -2112,163 +1612,166 @@ if(SpeechRecognition){
             event.error
         );
 
-        showToast(
-            "ERRO NO MICROFONE"
-        );
+        mic.classList.remove("active");
+
+        voiceState.textContent = "READY";
 
     };
 
 
     recognition.onend = () => {
 
-        listening = false;
+        mic.classList.remove("active");
 
-        mic.classList.remove(
-            "active"
-        );
+        voiceState.textContent = "READY";
 
-        voiceState.textContent =
-            "READY";
+        processing.textContent = "STANDBY";
 
     };
 
 
-    mic.addEventListener(
-        "click",
-        () => {
+    mic.addEventListener("click",() => {
 
-            if(listening){
+        try{
 
-                recognition.stop();
+            recognition.start();
 
-            }else{
+        }catch(error){
 
-                try{
-
-                    recognition.start();
-
-                }catch(error){
-
-                    addLog(
-                        "AUDIO: " +
-                        error.message
-                    );
-
-                }
-
-            }
+            addLog("AUDIO: RECOGNITION ALREADY ACTIVE");
 
         }
-    );
+
+    });
 
 }else{
 
-    mic.addEventListener(
-        "click",
-        () => {
+    mic.addEventListener("click",() => {
 
-            showToast(
-                "RECONHECIMENTO DE VOZ NÃO DISPONÍVEL"
-            );
-
-            addLog(
-                "AUDIO: SPEECH RECOGNITION UNAVAILABLE"
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   RELÓGIO
-===================================================== */
-
-function updateClock(){
-
-    const date =
-        new Date();
-
-    clock.textContent =
-        date.toLocaleTimeString(
-            "pt-BR"
+        addMessage(
+            "NEMIS",
+            "O reconhecimento de voz não está disponível neste navegador."
         );
 
+        addLog(
+            "AUDIO: SPEECH RECOGNITION NOT SUPPORTED"
+        );
+
+    });
+
 }
 
 
-setInterval(
-    updateClock,
-    1000
-);
-
-updateClock();
-
-
-/* =====================================================
+/* =========================================================
    TELEMETRIA DINÂMICA
-===================================================== */
+   ========================================================= */
 
-function randomBetween(min,max){
+const bars = [
+    document.getElementById("bar1"),
+    document.getElementById("bar2"),
+    document.getElementById("bar3"),
+    document.getElementById("bar4"),
+    document.getElementById("bar5")
+];
 
-    return Math.floor(
-        Math.random() *
-        (max - min + 1)
-    ) + min;
+setInterval(() => {
 
-}
+    bars.forEach(bar => {
 
+        const value =
+            Math.floor(
+                35 + Math.random() * 60
+            );
 
-function updateTelemetry(){
+        bar.style.height =
+            value + "%";
 
-    cpu.textContent =
-        randomBetween(35,68) +
-        "%";
+    });
 
-    ram.textContent =
-        randomBetween(48,72) +
-        "%";
-
-    temp.textContent =
-        randomBetween(34,39) +
-        "°C";
-
-}
+},1200);
 
 
-setInterval(
-    updateTelemetry,
-    1800
-);
+/* =========================================================
+   PROGRESSO DOS SISTEMAS
+   ========================================================= */
+
+const coreProgress =
+    document.getElementById("coreProgress");
+
+const neuralProgress =
+    document.getElementById("neuralProgress");
+
+const voiceProgress =
+    document.getElementById("voiceProgress");
+
+setInterval(() => {
+
+    coreProgress.style.width =
+        (88 + Math.random()*11) + "%";
+
+    neuralProgress.style.width =
+        (70 + Math.random()*29) + "%";
+
+    voiceProgress.style.width =
+        "100%";
+
+},1800);
 
 
-/* =====================================================
+/* =========================================================
+   RADAR DINÂMICO
+   ========================================================= */
+
+const blips =
+    document.querySelectorAll(".blip");
+
+setInterval(() => {
+
+    blips.forEach(blip => {
+
+        blip.style.left =
+            (18 + Math.random()*64) + "%";
+
+        blip.style.top =
+            (18 + Math.random()*64) + "%";
+
+    });
+
+},1800);
+
+
+/* =========================================================
    INICIALIZAÇÃO
-===================================================== */
+   ========================================================= */
 
-setTimeout(
-    () => {
+window.addEventListener("load",() => {
 
-        addLog(
-            "SYSTEM: HUD INTERFACE READY"
-        );
+    addLog("SYSTEM: NEMIS ONLINE");
 
-        addLog(
-            "CORE: NEMIS ONLINE"
-        );
+    addLog("CORE: NEURAL ENGINE READY");
 
-        addLog(
-            "VOICE: PT-BR INTERFACE READY"
-        );
+    addLog("HUD: GRAPHICAL INTERFACE ACTIVE");
 
-        addLog(
-            "SECURITY: LOCAL MODE"
-        );
+    addLog("AUDIO: VOICE CHANNEL READY");
 
-    },
-    500
-);
+    addLog("READY: AWAITING USER INPUT");
+
+});
+
+
+/* =========================================================
+   CARREGAMENTO DAS VOZES DO NAVEGADOR
+   ========================================================= */
+
+if("speechSynthesis" in window){
+
+    speechSynthesis.onvoiceschanged = () => {
+
+        speechSynthesis.getVoices();
+
+    };
+
+}
 
 </script>
 
